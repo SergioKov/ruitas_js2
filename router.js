@@ -1,6 +1,3 @@
-import Home from './views/Home/home.js';
-
-
 // Definimos nuestras rutas con diferentes estructuras y variables dinámicas
 const routes = [
     {//es objeto con index 0 de array 'routes'
