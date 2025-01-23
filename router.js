@@ -1,15 +1,25 @@
 // Definimos nuestras rutas con diferentes estructuras y variables dinámicas
 const routes = [
-    {
+    {//es objeto con index 0 de array 'routes'
         path: /^\/$/, // Ruta principal '/'
         handler: () => {
             document.getElementById('app').innerHTML = '<h1>Bienvenido a la página principal</h1>';
         }
     },
-    {
+    {//es objeto con index 1 de array 'routes'
         path: /^\/about$/, // Ruta estática para "/about"
         handler: () => {
             document.getElementById('app').innerHTML = '<h1>Sobre Nosotros</h1><p>Esta es la página de información sobre nosotros.</p>';
+        }
+    },
+    {
+        path: /^\/home$/, // Ruta estática para "/home"
+        handler: (params) => {
+            const [userId] = params;
+            console.log('params: ', params);
+            console.log('Home: ', Home);
+            Home(params);
+            //document.getElementById('app').innerHTML = Home;
         }
     },
     {
@@ -49,11 +59,18 @@ function navigate(url) {
 
 // Función que procesa la URL actual y busca la ruta correspondiente
 function route(url) {
+    console.log('=== function route() ===');
     const route = routes.find(r => r.path.test(url)); // Encuentra la primera ruta que coincida con la URL actual
-    if (route) {
+    console.log('route: ', route);
+    if(route) {
         const match = url.match(route.path); // Extrae los parámetros de la URL
-        route.handler(match.slice(1)); // Llama al manejador de la ruta con los parámetros extraídos
-    } else {
+        console.log('match: ', match);
+        let match_sliced = match.slice(1);//'match_sliced' son 'params' para la funcion handler()
+        console.log('match_sliced: ', match_sliced);
+        let params = match_sliced;
+        console.log('params: ', params);
+        route.handler(params); // Llama al manejador de la ruta con los parámetros extraídos 'params'
+    }else{
         navigate('/404'); // Si no se encuentra la ruta, redirige a 404
     }
 }
@@ -73,5 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Llama a route() para procesar la URL actual cuando la página carga por primera vez
+    console.log('1. load. path: ', window.location.pathname);
     route(window.location.pathname);
 });
+
+/*
+window.addEventListener('load', function() {
+    console.log('2. load. path: ', window.location.pathname);
+    route(window.location.pathname);
+
+});
+*/
